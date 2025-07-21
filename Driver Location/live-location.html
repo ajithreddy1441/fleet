@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Driver Location</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <style>
+    body {
+      background-color: #f5f8ff;
+      padding: 20px;
+    }
+
+    .card {
+      border-radius: 10px;
+    }
+
+    #map {
+      height: 500px;
+      width: 100%;
+      border-radius: 10px;
+    }
+
+    .map-legend {
+      position: absolute;
+      bottom: 40px;
+      right: 30px;
+      background: white;
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 5px;
+    }
+
+    .legend-item span {
+      margin-left: 8px;
+      font-size: 14px;
+    }
+
+    .status-icon {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+    }
+
+    .online { background-color: #28a745; }
+    .in-service { background-color: #1e2a78; }
+    .offline { background-color: #ffc107; }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="mb-4">
+      <h5 class="fw-bold">Driver Location</h5>
+    </div>
+
+    <div class="card p-3 mb-4">
+      <select class="form-select w-25" id="driverSelect">
+        <option selected disabled>Select Driver</option>
+        <option value="1">John Doe</option>
+        <option value="2">Jane Smith</option>
+        <option value="3">Alex Johnson</option>
+      </select>
+    </div>
+
+    <div class="position-relative">
+      <div id="map"></div>
+      <div class="map-legend">
+        <div class="legend-item"><div class="status-icon online"></div><span>Online</span></div>
+        <div class="legend-item"><div class="status-icon in-service"></div><span>In Service</span></div>
+        <div class="legend-item"><div class="status-icon offline"></div><span>Offline</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap 5 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Google Maps JS API -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY"></script>
+
+  <script>
+    let map;
+    const driverLocations = {
+      1: { lat: 37.7749, lng: -122.4194, status: 'online' },      // San Francisco
+      2: { lat: 40.7128, lng: -74.0060, status: 'in-service' },   // New York
+      3: { lat: 51.5074, lng: -0.1278, status: 'offline' }        // London
+    };
+
+    function initMap() {
+      map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 2,
+        center: { lat: 20, lng: 0 },
+      });
+    }
+
+    function addMarker(driverId) {
+      const location = driverLocations[driverId];
+      const iconColor = {
+        'online': 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
+        'in-service': 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+        'offline': 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png'
+      };
+
+      new google.maps.Marker({
+        position: location,
+        map: map,
+        icon: iconColor[location.status],
+        title: "Driver Location"
+      });
+
+      map.setCenter(location);
+      map.setZoom(5);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      initMap();
+
+      document.getElementById('driverSelect').addEventListener('change', function () {
+        addMarker(this.value);
+      });
+    });
+  </script>
+</body>
+</html>

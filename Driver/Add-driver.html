@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Add Driver - Fleet Panel</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"/>
+
+  <style>
+    :root {
+      --primoo-yellow: #f9dd17;
+      --primoo-blue: #04213c;
+      --primoo-bg: #f6f8fc;
+      --primoo-dark: #25344b;
+      --primoo-grey: #e3e7ee;
+      --primoo-white: #fff;
+    }
+
+    body {
+      background-color: var(--primoo-bg);
+    }
+
+    .main-content {
+      padding: 32px;
+    }
+
+    .card {
+      background: var(--primoo-white);
+      border-radius: 12px;
+      border: 1px solid var(--primoo-grey);
+    }
+
+    .upload-placeholder {
+      width: 120px;
+      height: 120px;
+      background: var(--primoo-bg);
+      border: 2px dashed #bdbdbd;
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 32px auto 16px auto;
+      cursor: pointer;
+      position: relative;
+      font-size: 2.5rem;
+      color: #bdbdbd;
+      transition: border 0.2s;
+    }
+
+    .upload-placeholder:hover {
+      border-color: var(--primoo-yellow);
+      color: var(--primoo-yellow);
+    }
+
+    .upload-placeholder input[type="file"] {
+      opacity: 0;
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+    }
+
+    .file-types {
+      color: #8e9aac;
+      font-size: 0.95rem;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .status-group {
+      margin-left: 16px;
+    }
+
+    .form-label {
+      font-weight: 500;
+      color: var(--primoo-dark);
+    }
+
+    .form-control, .form-select {
+      background: var(--primoo-bg);
+      border-radius: 8px;
+      border: 1px solid #e9ecef;
+      font-size: 1.07rem;
+    }
+
+    .form-control:focus, .form-select:focus {
+      border-color: var(--primoo-yellow);
+      box-shadow: none;
+      background: var(--primoo-bg);
+    }
+
+    .required {
+      color: #de3d6d;
+      margin-left: 2px;
+    }
+
+    .card-title {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--primoo-dark);
+      margin-bottom: 24px;
+    }
+
+.radio-status .form-check-input:checked {
+  border-color: var(--primoo-yellow);
+  background-color: var(--primoo-yellow);
+}
+
+.radio-status .form-check-label {
+  font-weight: 400;
+  color: var(--primoo-dark);
+}
+
+    /* Buttons */
+    .btn-primary {
+      background-color: var(--primoo-yellow);
+      border-color: var(--primoo-yellow);
+      color: #000;
+    }
+
+    .btn-primary:hover,
+    .btn-primary:focus {
+      background-color: #e6c800;
+      border-color: #e6c800;
+      color: #000;
+    }
+
+    .btn-light {
+      background-color: var(--primoo-grey);
+      border-color: var(--primoo-grey);
+      color: var(--primoo-dark);
+    }
+
+    .btn-light:hover,
+    .btn-light:focus {
+      background-color: #cfd6e0;
+      border-color: #cfd6e0;
+      color: var(--primoo-dark);
+    }
+
+    /* Tablet View */
+    @media (max-width: 991px) {
+      .main-content {
+        padding: 20px;
+      }
+
+      .main-content .row > div {
+        margin-bottom: 24px;
+      }
+
+      .upload-placeholder {
+        margin: 24px auto 12px auto;
+      }
+
+      .card-title {
+        font-size: 1.25rem;
+      }
+
+      .form-label {
+        font-size: 0.95rem;
+      }
+
+      .form-control,
+      .form-select {
+        font-size: 1rem;
+      }
+    }
+
+    /* Mobile View */
+    @media (max-width: 768px) {
+      .main-content {
+        padding: 16px 12px;
+      }
+
+      .header-bar {
+        flex-direction: column;
+        gap: 12px;
+        padding: 12px 8px;
+      }
+
+      .card {
+        padding: 16px;
+      }
+
+      .upload-placeholder {
+        width: 100px;
+        height: 100px;
+        font-size: 2rem;
+      }
+
+      .card-title {
+        font-size: 1.15rem;
+      }
+
+      .form-label {
+        font-size: 0.9rem;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .mt-4.d-flex.justify-content-center.gap-3 {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="row g-4">
+      <!-- Left Card: Add Driver -->
+      <div class="col-lg-4">
+        <div class="card p-4 h-100">
+          <div class="card-title">Add Driver</div>
+          <div class="upload-placeholder text-center" id="uploadArea">
+            <i class="bi bi-person"></i>
+            <i class="bi bi-upload"></i>
+            <input type="file" id="driverPhoto" accept=".png,.jpg,.jpeg,.gif" />
+          </div>
+          <div class="file-types">Only .png .jpg .jpeg .gif Allowed</div>
+          <div class="mt-4">
+            <div class="mb-2 fw-semibold">Status</div>
+            <div class="status-group radio-status">
+              <div class="form-check mb-1">
+                <input class="form-check-input" type="radio" name="status" id="statusActive" value="Active" checked>
+                <label class="form-check-label" for="statusActive">Active</label>
+              </div>
+              <div class="form-check mb-1">
+                <input class="form-check-input" type="radio" name="status" id="statusInactive" value="Inactive">
+                <label class="form-check-label" for="statusInactive">Inactive</label>
+              </div>
+              <div class="form-check mb-1">
+                <input class="form-check-input" type="radio" name="status" id="statusPending" value="Pending">
+                <label class="form-check-label" for="statusPending">Pending</label>
+              </div>
+              <div class="form-check mb-1">
+                <input class="form-check-input" type="radio" name="status" id="statusBanned" value="Banned">
+                <label class="form-check-label" for="statusBanned">Banned</label>
+              </div>
+              <div class="form-check mb-1">
+                <input class="form-check-input" type="radio" name="status" id="statusReject" value="Reject">
+                <label class="form-check-label" for="statusReject">Reject</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Right Card: Add Driver Information -->
+      <div class="col-lg-8">
+        <div class="card p-4 h-100">
+          <div class="card-title">Add Driver Information</div>
+          <form id="driverForm">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label">First Name <span class="required">*</span></label>
+                <input type="text" class="form-control" placeholder="First Name" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Last Name <span class="required">*</span></label>
+                <input type="text" class="form-control" placeholder="Last Name" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Email <span class="required">*</span></label>
+                <input type="email" class="form-control" placeholder="Email" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Username <span class="required">*</span></label>
+                <input type="text" class="form-control" placeholder="Username" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Password <span class="required">*</span></label>
+                <input type="password" class="form-control" placeholder="Password" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Contact Number <span class="required">*</span></label>
+                <div class="input-group">
+                  <select class="form-select" style="max-width: 80px;">
+                    <option>+1</option>
+                    <option>+44</option>
+                    <option>+91</option>
+                    <option>+234</option>
+                  </select>
+                  <input type="text" class="form-control" placeholder="Contact Number" required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Gender <span class="required">*</span></label>
+                <select class="form-select" required>
+                  <option value="">Select Gender</option>
+                  <option>Male</option>
+                  <option>Female</option>
+                  <option>Other</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Select Service</label>
+                <select class="form-select">
+                  <option value="">Select Service</option>
+                  <option>Ride</option>
+                  <option>Delivery</option>
+                  <option>Rental</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Car Model <span class="required">*</span></label>
+                <input type="text" class="form-control" placeholder="Car Model" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Car Color <span class="required">*</span></label>
+                <input type="text" class="form-control" placeholder="Car Color" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Car Plate Number <span class="required">*</span></label>
+                <input type="text" class="form-control" placeholder="Car Plate Number" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Car Production Year <span class="required">*</span></label>
+                <input type="number" class="form-control" placeholder="Car Production Year" min="1980" max="2025" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Bank Name <span class="required">*</span></label>
+                <input type="text" class="form-control" placeholder="Bank Name" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Bank Code <span class="required">*</span></label>
+                <input type="text" class="form-control" placeholder="Bank Code" required>
+              </div>
+            </div>
+            <div class="mt-4 d-flex justify-content-center gap-3">
+              <button type="button" class="btn btn-light px-4" onclick="window.history.back()">Cancel</button>
+              <button type="submit" class="btn btn-primary px-4">Add Driver</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Upload area image preview
+    const uploadArea = document.getElementById('uploadArea');
+    const driverPhoto = document.getElementById('driverPhoto');
+
+    driverPhoto.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const allowedTypes = ['image/png', 'image/jpg', 'image/jpeg', 'image/gif'];
+        if (!allowedTypes.includes(file.type)) {
+          alert('Only .png .jpg .jpeg .gif files are allowed!');
+          driverPhoto.value = '';
+          return;
+        }
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          uploadArea.innerHTML = `<img src="${e.target.result}" alt="Driver Photo" class="rounded-circle" style="width:120px;height:120px;object-fit:cover;">`;
+        }
+        reader.readAsDataURL(file);
+      }
+    });
+
+    document.getElementById('driverForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Driver added successfully!');
+    });
+  </script>
+</body>
+</html>

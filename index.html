@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Primoo - Layout Only (Header & Sidebar)</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Sidebar -->
+  <aside class="sidebar d-flex flex-column" id="sidebar">
+    <div class="logo">
+      <span class="logo-icon">P</span> Primoo
+    </div>
+    <nav class="nav flex-column mb-4" id="sidebarMenu">
+      <!-- Dashboard -->
+      <a class="nav-link active" href="index.html"><i class="bi bi-house-door"></i> Dashboard</a>
+      <!-- Driver Dropdown -->
+      <a class="nav-link " href="#" data-menu="driver">
+        <i class="bi bi-person-badge"></i> Driver
+        <i class="bi bi-chevron-down chevron"></i>
+      </a>
+      <div class="submenu" data-submenu="driver">
+        <a class="nav-link" id="driverListLink">Driver List</a>
+        <a class="nav-link" id="pendingDriverLink">Pending Driver</a>
+        <a class="nav-link" id="addDriverLink">Add Driver</a>
+        <a class="nav-link" id="manageDriverDocLink">Manage Driver Document</a>
+      </div>
+      <!-- Ride Request Dropdown -->
+      <a class="nav-link" href="#" data-menu="ride">
+        <i class="bi bi-car-front"></i> Ride Request
+        <i class="bi bi-chevron-down chevron"></i>
+      </a>
+      <div class="submenu" data-submenu="ride">
+        <a class="nav-link" id="rideHistoryLink">Ride History</a>
+        <a class="nav-link" id="activeRidesLink">Active Rides</a>
+        <a class="nav-link" id="completedRidesLink">Completed Rides</a>
+        <a class="nav-link" id="cancelledRidesLink">Cancelled Rides</a>
+      </div>
+      <!-- Car Details Dropdown -->
+      <a class="nav-link" href="#" data-menu="car">
+        <i class="bi bi-card-list"></i> Car Details
+        <i class="bi bi-chevron-down chevron"></i>
+      </a>
+      <div class="submenu" data-submenu="car">
+        <a class="nav-link" id="carDetailsListLink">Car Details List</a>
+      </div>
+      <!-- Withdraw Request Dropdown -->
+      <a class="nav-link" href="#" data-menu="withdraw">
+        <i class="bi bi-credit-card"></i> Withdraw Request
+        <i class="bi bi-chevron-down chevron"></i>
+      </a>
+      <div class="submenu" data-submenu="withdraw">
+        <a class="nav-link" id="withdrawHistoryLink">Withdraw History</a>
+        <a class="nav-link" id="pendingWithdrawLink">Pending List</a>
+        <a class="nav-link" id="approvedWithdrawLink">Approved List</a>
+        <a class="nav-link" id="declineWithdrawLink">Decline List</a>
+        <a class="nav-link" id="withdrawRequestLink">Withdraw Request</a>
+      </div>
+      <!-- Report Dropdown -->
+      <a class="nav-link" href="#" data-menu="report">
+        <i class="bi bi-clipboard-data"></i> Report
+        <i class="bi bi-chevron-down chevron"></i>
+      </a>
+      <div class="submenu" data-submenu="report">
+        <a class="nav-link" id="driverEarningReportLink">Earnings Report</a>
+        <a class="nav-link" href="#">Complaints</a>
+      </div>
+      <!-- Driver Location Dropdown -->
+      <a class="nav-link" href="#" data-menu="location">
+        <i class="bi bi-map"></i> Driver Location
+        <i class="bi bi-chevron-down chevron"></i>
+      </a>
+      <div class="submenu" data-submenu="location">
+        <a class="nav-link" id="liveLocationLink">Live Location</a>
+        <a class="nav-link" href="#">Location History</a>
+      </div>
+    </nav>
+  </aside>
+  <!-- Header Only (Topbar) -->
+  <div class="topbar d-flex align-items-center">
+    <!-- Hamburger for mobile -->
+    <button class="hamburger d-lg-none" id="hamburgerBtn"><i class="bi bi-list"></i></button>
+    <span class="earning flex-shrink-0"><i class="bi bi-credit-card"></i> Earning: €</span>
+    <div class="ms-auto d-flex align-items-center gap-2 position-relative">
+      <!-- Theme Toggle -->
+      <button class="btn btn-outline-dark border me-2" id="themeToggle" title="Toggle Theme">
+        <i class="bi bi-sun" id="themeIcon"></i>
+      </button>
+      <!-- Language Dropdown -->
+      <div class="dropdown me-2">
+        <button class="btn btn-light border dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="langBtn">
+          English
+        </button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="#">English</a></li>
+          <li><a class="dropdown-item" href="#">Français</a></li>
+          <li><a class="dropdown-item" href="#">Español</a></li>
+          <li><a class="dropdown-item" href="#">Deutsch</a></li>
+          <li><a class="dropdown-item" href="#">العربية</a></li>
+        </ul>
+      </div>
+      <!-- Notification Bell -->
+      <button class="btn btn-outline-dark border me-2 position-relative" id="notifyBtn" title="Notifications">
+        <i class="bi bi-bell"></i>
+      </button>
+      <!-- User Icon with dropdown -->
+      <span class="profile-img me-2" id="profileMenuBtn">
+        <i class="bi bi-person"></i>
+        <div class="profile-dropdown" id="profileDropdown">
+          <button class="dropdown-item" id="myProfile"><i class="bi bi-person-circle"></i> My Profile</button>
+          <button class="dropdown-item" id="settings"><i class="bi bi-gear"></i> Settings</button>
+          <button class="dropdown-item" id="logout"><i class="bi bi-box-arrow-right"></i> Logout</button>
+        </div>
+      </span>
+    </div>
+  </div>
+  <!-- Main Content or Driver content -->
+  <div class="main-wrapper" id="main-wrapper">
+    <div class="section-header text-center">Drivers or Operators</div>
+    <!-- Tabs -->
+    <div class="custom-tabs d-flex justify-content-center mb-3">
+      <button class="btn active" id="tabPerformance">Performance History</button>
+      <button class="btn" id="tabApplications">Total Applications</button>
+      <button class="btn" id="tabAddDriver">Add Driver</button>
+    </div>
+    <!-- Filters -->
+      <div class="filter-row">
+        <input type="text" class="form-control" placeholder="Search" />
+        <select class="form-select">
+          <option value="today">Today</option>
+          <option value="week">This Week</option>
+          <option value="month">This Month</option>
+        </select>
+        <input type="date" class="form-control" />
+        <input type="date" class="form-control" />
+        <button class="btn"><i class="bi bi-download"></i></button>
+        <button class="btn"><i class="bi bi-gear"></i></button>
+      </div>
+    <!-- Driver Tabs Row -->
+    <div class="driver-tabs-row">
+      <span>Driver</span>
+      <span>Driver</span>
+      <span>Driver</span>
+      <span>Driver</span>
+      <span>Driver</span>
+      <span>Driver</span>
+      <span>Driver</span>
+      <span>Driver</span>
+      <span>Driver</span>
+    </div>
+    <!-- Empty State -->
+    <div class="empty-driver-state">
+      <img src="./assets/img/micky.jpg" alt="No drivers yet"/>
+      <h5>No drivers yet</h5>
+      <p>Lets Start Onboard your drivers</p>
+      <button class="btn-add-driver" id="addFirstDriverBtn"><i class="bi bi-plus-lg"></i> Add Your First Driver</button>
+    </div>
+  </div>
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Sidebar dropdown logic for all menus
+    document.querySelectorAll('.sidebar .nav-link[data-menu]').forEach(function(link){
+      link.addEventListener('click', function(e){
+        e.preventDefault();
+        const menu = link.getAttribute('data-menu');
+        // Toggle active class
+        document.querySelectorAll('.sidebar .nav-link[data-menu]').forEach(function(l){
+          if(l !== link) {
+            l.classList.remove('active');
+            l.querySelector('.chevron').style.transform = 'rotate(0deg)';
+            const submenu = document.querySelector('.sidebar .submenu[data-submenu="'+l.getAttribute('data-menu')+'"]');
+            if(submenu) submenu.style.display = 'none';
+          }
+        });
+        // Toggle for clicked menu
+        const submenu = document.querySelector('.sidebar .submenu[data-submenu="'+menu+'"]');
+        if(submenu.style.display === 'block'){
+          submenu.style.display = 'none';
+          link.classList.remove('active');
+          link.querySelector('.chevron').style.transform = 'rotate(0deg)';
+        } else {
+          submenu.style.display = 'block';
+          link.classList.add('active');
+          link.querySelector('.chevron').style.transform = 'rotate(180deg)';
+        }
+      });
+    });
+
+    // Responsive sidebar toggle
+    const sidebar = document.getElementById('sidebar');
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    hamburgerBtn.addEventListener('click', function(e){
+      e.stopPropagation();
+      sidebar.classList.toggle('hide');
+    });
+
+    // Click outside sidebar to close on mobile
+    document.addEventListener('click', function(event){
+      if(window.innerWidth <= 1024){
+        if(!sidebar.contains(event.target) && !hamburgerBtn.contains(event.target)){
+          sidebar.classList.add('hide');
+        }
+      }
+    });
+
+    // Theme toggle
+    document.getElementById("themeToggle").addEventListener("click", function() {
+      const body = document.body;
+      const themeIcon = document.getElementById("themeIcon");
+      if (!body.classList.contains("dark-mode")) {
+        body.classList.add("dark-mode");
+        themeIcon.classList.remove("bi-sun");
+        themeIcon.classList.add("bi-moon");
+        body.style.background = "#04213c";
+      } else {
+        body.classList.remove("dark-mode");
+        themeIcon.classList.remove("bi-moon");
+        themeIcon.classList.add("bi-sun");
+        body.style.background = "";
+      }
+    });
+
+    // Language selector
+    document.querySelectorAll('.dropdown-menu .dropdown-item').forEach(function(item){
+      item.addEventListener('click', function(){
+        document.getElementById('langBtn').innerText = this.innerText;
+      });
+    });
+
+    // Notification bell logic (demo)
+    document.getElementById('notifyBtn').addEventListener('click', function(){
+      alert('You have new notifications!');
+      // For real use, replace with modal/offcanvas etc.
+    });
+
+    // Sidebar responsive initial state for mobile
+    function checkSidebar() {
+      if(window.innerWidth <= 1024){
+        sidebar.classList.add('hide');
+      } else {
+        sidebar.classList.remove('hide');
+      }
+    }
+    window.addEventListener('resize', checkSidebar);
+    checkSidebar();
+
+    // Profile dropdown logic
+    const profileMenuBtn = document.getElementById('profileMenuBtn');
+    const profileDropdown = document.getElementById('profileDropdown');
+    profileMenuBtn.addEventListener('click', function(e){
+      e.stopPropagation();
+      profileDropdown.classList.toggle('show');
+    });
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(event){
+      if (!profileMenuBtn.contains(event.target)) {
+        profileDropdown.classList.remove('show');
+      }
+    });
+    // Option click handlers (demo)
+    document.getElementById('myProfile').onclick = function() { alert('Go to My Profile'); };
+    document.getElementById('settings').onclick = function() { alert('Go to Settings'); };
+    document.getElementById('logout').onclick = function() { alert('Logging out...'); };
+
+    // Get all nav links
+  const links = document.querySelectorAll('.nav-link');
+
+  // Check the current page URL and highlight the matching link
+  links.forEach(link => {
+    if (link.href === window.location.href) {
+      link.classList.add('active');
+    } else {
+      link.classList.remove('active');
+    }
+  });
+    // Driver Links
+    document.getElementById('addFirstDriverBtn').addEventListener('click', function () {
+      fetch('Driver/Add-driver.html')
+        .then(response => {
+          if (!response.ok) throw new Error('Failed to load Add-driver.html');
+          return response.text();
+        })
+        .then(html => {
+          document.querySelector('.main-wrapper').innerHTML = html;
+        });
+    });
+  document.getElementById('addFirstDriverBtn').addEventListener('click', function () {
+    fetch('Driver/Add-driver.html')
+      .then(response => {
+        if (!response.ok) throw new Error('Failed to load add-driver.html');
+        return response.text();
+      })
+      .then(html => {
+        document.querySelector('.main-wrapper').innerHTML = html;
+      })
+  });
+  document.getElementById('pendingDriverLink').addEventListener('click', function () {
+    fetch('Driver/pending-driver.html')
+      .then(response => {
+        if (!response.ok) throw new Error('Failed to load pending-driver.html');
+        return response.text();
+      })
+      .then(html => {
+        document.querySelector('.main-wrapper').innerHTML = html;
+      })
+  });
+  document.getElementById('addDriverLink').addEventListener('click', function () {
+    fetch('Driver/Add-driver.html')
+      .then(response => {
+        if (!response.ok) throw new Error('Failed to load add-driver.html');
+        return response.text();
+      })
+      .then(html => {
+        document.querySelector('.main-wrapper').innerHTML = html;
+      })
+  });
+  document.getElementById('driverListLink').addEventListener('click', function () {
+    fetch('Driver/driver-list.html')
+      .then(response => {
+        if (!response.ok) throw new Error('Failed to load driver-list.html');
+        return response.text();
+      })
+      .then(html => {
+        document.querySelector('.main-wrapper').innerHTML = html;
+      })
+  });
+  document.getElementById('manageDriverDocLink').addEventListener('click', function () {
+    fetch('Driver/driver-document.html')
+      .then(response => {
+        if (!response.ok) throw new Error('Failed to load driver-document.html');
+        return response.text();
+      })
+      .then(html => {
+        document.querySelector('.main-wrapper').innerHTML = html;
+      })
+  });
+  // Ride Request links
+  document.getElementById('rideHistoryLink').addEventListener('click', function () {
+    fetch('Ride Request/ride-history.html')
+      .then(response => {
+        if (!response.ok) throw new Error('Failed to load ride-history.html');
+        return response.text();
+      })
+      .then(html => {
+        document.querySelector('.main-wrapper').innerHTML = html;
+      })
+  });
+  document.getElementById('activeRidesLink').addEventListener('click', function () {
+    fetch('Ride Request/active-rides.html')
+      .then(response => {
+        if (!response.ok) throw new Error('Failed to load ride-history.html');
+        return response.text();
+      })
+      .then(html => {
+        document.querySelector('.main-wrapper').innerHTML = html;
+      })
+  });
+  document.getElementById('completedRidesLink').addEventListener('click', function () {
+    fetch('Ride Request/completed-rides.html')
+      .then(response => {
+        if (!response.ok) throw new Error('Failed to load ride-history.html');
+        return response.text();
+      })
+      .then(html => {
+        document.querySelector('.main-wrapper').innerHTML = html;
+      })
+  });
+  document.getElementById('cancelledRidesLink').addEventListener('click', function () {
+    fetch('Ride Request/cancelled-rides.html')
+      .then(response => {
+        if (!response.ok) throw new Error('Failed to load ride-history.html');
+        return response.text();
+      })
+      .then(html => {
+        document.querySelector('.main-wrapper').innerHTML = html;
+      })
+  });
+  // Car Details link
+  document.getElementById('carDetailsListLink').addEventListener('click', function () {
+    fetch('Car Details/car-details.html')
+      .then(response => {
+        if (!response.ok) throw new Error('Failed to load car-details.html');
+        return response.text();
+      })
+      .then(html => {
+        document.querySelector('.main-wrapper').innerHTML = html;
+      })
+  });
+  // Withdraw Request links
+  document.getElementById('withdrawHistoryLink').addEventListener('click', function () {
+    fetch('Withdraw Request/withdraw-history.html')
+      .then(response => {
+        if (!response.ok) throw new Error('Failed to load withdraw-history.html');
+        return response.text();
+      })
+      .then(html => {
+        document.querySelector('.main-wrapper').innerHTML = html;
+      })
+  });
+  document.getElementById('pendingWithdrawLink').addEventListener('click', function () {
+    fetch('Withdraw Request/pending-withdraw.html')
+      .then(response => {
+        if (!response.ok) throw new Error('Failed to load pending-withdraw.html');
+        return response.text();
+      })
+      .then(html => {
+        document.querySelector('.main-wrapper').innerHTML = html;
+      })
+  });
+  document.getElementById('approvedWithdrawLink').addEventListener('click', function () {
+    fetch('Withdraw Request/approved-withdraw.html')
+      .then(response => {
+        if (!response.ok) throw new Error('Failed to load approved-withdraw.html');
+        return response.text();
+      })
+      .then(html => {
+        document.querySelector('.main-wrapper').innerHTML = html;
+      })
+  });
+  document.getElementById('declineWithdrawLink').addEventListener('click', function () {
+    fetch('Withdraw Request/decline-withdraw.html')
+      .then(response => {
+        if (!response.ok) throw new Error('Failed to load decline-withdraw.html');
+        return response.text();
+      })
+      .then(html => {
+        document.querySelector('.main-wrapper').innerHTML = html;
+      })
+  });
+  document.getElementById('withdrawRequestLink').addEventListener('click', function () {
+    fetch('Withdraw Request/withdraw-request.html')
+      .then(response => {
+        if (!response.ok) throw new Error('Failed to load withdraw-request.html');
+        return response.text();
+      })
+      .then(html => {
+        document.querySelector('.main-wrapper').innerHTML = html;
+      })
+  });
+  // Report links
+  document.getElementById('driverEarningReportLink').addEventListener('click', function () {
+    fetch('Driver Earning/driver-earning.html')
+      .then(response => {
+        if (!response.ok) throw new Error('Failed to load driver-earning.html');
+        return response.text();
+      })
+      .then(html => {
+        document.querySelector('.main-wrapper').innerHTML = html;
+      })
+  });
+  // Driver Location links
+  document.getElementById('liveLocationLink').addEventListener('click', function () {
+    fetch('Driver Location/live-location.html')
+      .then(response => {
+        if (!response.ok) throw new Error('Failed to load live-location.html');
+        return response.text();
+      })
+      .then(html => {
+        document.querySelector('.main-wrapper').innerHTML = html;
+      })
+  });
+  // Profile links
+  document.getElementById('myProfile').addEventListener('click', function () {
+    fetch('Header/my-profile.html')
+      .then(response => {
+        if (!response.ok) throw new Error('Failed to load my-profile.html');
+        return response.text();
+      })
+      .then(html => {
+        document.querySelector('.main-wrapper').innerHTML = html;
+      });
+  });
+  </script>
+</body>
+</html>
