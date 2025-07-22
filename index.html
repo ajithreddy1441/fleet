@@ -9,6 +9,24 @@
   <!-- Bootstrap Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"/>
   <link rel="stylesheet" href="style.css" />
+  <script>
+    function previewProfilePic(input) {
+  const file = input.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      const profileImg = document.getElementById("profileImg");
+      const placeholder = document.getElementById("placeholder");
+
+      profileImg.src = e.target.result;
+      profileImg.style.display = "block";
+      profileImg.style.margin = "0 auto 15px";
+      placeholder.style.display = "none";
+    };
+    reader.readAsDataURL(file);
+  }
+}
+  </script>
 </head>
 <body>
   <!-- Sidebar -->
@@ -68,7 +86,7 @@
       </a>
       <div class="submenu" data-submenu="report">
         <a class="nav-link" id="driverEarningReportLink">Earnings Report</a>
-        <a class="nav-link" href="#">Complaints</a>
+        <a class="nav-link" id="driverComplaintsReportLink">Complaints</a>
       </div>
       <!-- Driver Location Dropdown -->
       <a class="nav-link" href="#" data-menu="location">
@@ -77,7 +95,7 @@
       </a>
       <div class="submenu" data-submenu="location">
         <a class="nav-link" id="liveLocationLink">Live Location</a>
-        <a class="nav-link" href="#">Location History</a>
+        <a class="nav-link" id="locationHistoryLink">Location History</a>
       </div>
     </nav>
   </aside>
@@ -264,7 +282,7 @@
       }
     });
     // Option click handlers (demo)
-    document.getElementById('myProfile').onclick = function() { alert('Go to My Profile'); };
+    
     document.getElementById('settings').onclick = function() { alert('Go to Settings'); };
     document.getElementById('logout').onclick = function() { alert('Logging out...'); };
 
@@ -454,6 +472,16 @@
         document.querySelector('.main-wrapper').innerHTML = html;
       })
   });
+  document.getElementById('driverComplaintsReportLink').addEventListener('click', function () {
+    fetch('Driver Earning/complaints.html')
+      .then(response => {
+        if (!response.ok) throw new Error('Failed to load complaints.html');
+        return response.text();
+      })
+      .then(html => {
+        document.querySelector('.main-wrapper').innerHTML = html;
+      })
+  });
   // Driver Location links
   document.getElementById('liveLocationLink').addEventListener('click', function () {
     fetch('Driver Location/live-location.html')
@@ -465,17 +493,27 @@
         document.querySelector('.main-wrapper').innerHTML = html;
       })
   });
-  // Profile links
-  document.getElementById('myProfile').addEventListener('click', function () {
-    fetch('Header/my-profile.html')
+  document.getElementById('locationHistoryLink').addEventListener('click', function () {
+    fetch('Driver Location/location-history.html')
       .then(response => {
-        if (!response.ok) throw new Error('Failed to load my-profile.html');
+        if (!response.ok) throw new Error('Failed to load location-history.html');
         return response.text();
       })
       .then(html => {
         document.querySelector('.main-wrapper').innerHTML = html;
-      });
+      })
   });
+  // Profile links
+  document.getElementById('myProfile').addEventListener('click', function () {
+  fetch('Header/my-profile.html')
+    .then(response => {
+      if (!response.ok) throw new Error('Failed to load my-profile.html');
+      return response.text();
+    })
+    .then(html => {
+      document.querySelector('.main-wrapper').innerHTML = html;
+    });
+});
   </script>
 </body>
 </html>

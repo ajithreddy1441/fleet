@@ -1,73 +1,176 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>My Profile</title>
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet"/>
   <style>
     :root {
       --primoo-yellow: #f9dd17;
       --primoo-blue: #04213c;
-      --primoo-bg: #f6f6f6;
+      --primoo-bg: #f6f7fb;
     }
-    body {
+
+    .profile-card {
+      max-width: 600px;
+      margin: auto;
+      padding: 30px;
       background-color: var(--primoo-bg);
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
     }
-    .profile-header {
-      background-color: var(--primoo-blue);
-      color: white;
-      padding: 2rem;
-      border-radius: 10px 10px 0 0;
-    }
+
     .profile-img {
-      width: 150px;
-      height: 150px;
+      width: 120px;
+      height: 120px;
       object-fit: cover;
       border-radius: 50%;
-      border: 5px solid white;
-      margin-top: -75px;
+      margin-bottom: 15px;
+      border: 4px solid var(--primoo-yellow);
+      display: none;
     }
-    .card {
-      border-radius: 10px;
+
+    .upload-placeholder {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background-color: #eaeaea;
+      margin: 0 auto 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      font-size: 24px;
+      color: #999;
+      border: 4px dashed #ccc;
+      cursor: pointer;
     }
-    .btn-edit {
+
+    .btn-warning {
       background-color: var(--primoo-yellow);
-      color: black;
+      border-color: var(--primoo-yellow);
+      color: #000;
     }
-    .btn-edit:hover {
-      background-color: #e4c900;
+
+    .btn-warning:hover {
+      background-color: #e6cb15;
+    }
+
+    .btn-group {
+      gap: 10px;
+    }
+
+    input[type="file"] {
+      display: none;
     }
   </style>
 </head>
 <body>
 
-<div class="container mt-5">
-  <div class="card shadow">
-    <div class="profile-header text-center">
-      <h2>My Profile</h2>
-    </div>
-    <div class="card-body text-center">
-      <img src="https://via.placeholder.com/150" alt="Profile Picture" class="profile-img mb-3">
-      <h4 id="user-name">Ajith Reddy</h4>
-      <p id="user-bio">Full Stack Developer | JavaScript, React, Node.js</p>
-      <p><i class="bi bi-envelope"></i> ajith@example.com</p>
-      <p><i class="bi bi-phone"></i> +91 9876543210</p>
-      <button class="btn btn-edit mt-2" onclick="editProfile()">Edit Profile</button>
-    </div>
+<div class="profile-card text-center">
+  <!-- Placeholder and Image Container -->
+  <div id="imageContainer">
+    <label for="driverPhoto" class="upload-placeholder" id="placeholder">
+      <i class="bi bi-person mb-1"></i>
+      <i class="bi bi-upload"></i>
+    </label>
+    <img id="profileImg" class="profile-img" alt="Profile Image" />
+    <input type="file" id="driverPhoto" accept=".png,.jpg,.jpeg,.gif" onchange="previewProfilePic(this)" />
   </div>
+
+  <h3 id="displayName">Ajith Reddy</h3>
+  <p class="text-muted" id="displayRole">Fleet Manager</p>
+
+  <!-- Form -->
+  <form id="profileForm" class="text-start mt-4">
+    <div class="mb-3">
+      <label class="form-label">Full Name</label>
+      <input type="text" class="form-control" id="nameInput" value="Ajith Reddy" disabled>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Email address</label>
+      <input type="email" class="form-control" id="emailInput" value="ajith@example.com" disabled>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Phone</label>
+      <input type="tel" class="form-control" id="phoneInput" value="+91 9876543210" disabled>
+    </div>
+
+    <!-- Password Change -->
+    <hr class="my-4">
+    <h5 class="text-primary">Change Password</h5>
+    <div class="mb-3">
+      <label class="form-label">New Password</label>
+      <input type="password" class="form-control" id="newPassword" placeholder="Enter new password">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Confirm Password</label>
+      <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm password">
+    </div>
+
+    <div class="d-flex justify-content-end btn-group">
+      <button type="button" class="btn btn-warning" id="editBtn" onclick="enableEdit()">Edit</button>
+      <button type="button" class="btn btn-success d-none" id="saveBtn" onclick="saveProfile()">Save</button>
+      <button type="button" class="btn btn-secondary d-none" id="cancelBtn" onclick="cancelEdit()">Cancel</button>
+    </div>
+  </form>
 </div>
 
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<!-- Bootstrap Icons -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-<!-- JavaScript -->
 <script>
-  function editProfile() {
-    alert("Edit profile feature coming soon!");
+  const nameInput = document.getElementById("nameInput");
+  const emailInput = document.getElementById("emailInput");
+  const phoneInput = document.getElementById("phoneInput");
+  const newPassword = document.getElementById("newPassword");
+  const confirmPassword = document.getElementById("confirmPassword");
+
+  const editBtn = document.getElementById("editBtn");
+  const saveBtn = document.getElementById("saveBtn");
+  const cancelBtn = document.getElementById("cancelBtn");
+
+  const originalValues = {
+    name: nameInput.value,
+    email: emailInput.value,
+    phone: phoneInput.value
+  };
+
+  function enableEdit() {
+    [nameInput, emailInput, phoneInput, newPassword, confirmPassword].forEach(el => el.disabled = false);
+    editBtn.classList.add("d-none");
+    saveBtn.classList.remove("d-none");
+    cancelBtn.classList.remove("d-none");
   }
+
+  function saveProfile() {
+    if (newPassword.value !== confirmPassword.value) {
+      alert("Passwords do not match!");
+      return;
+    }
+
+    [nameInput, emailInput, phoneInput, newPassword, confirmPassword].forEach(el => el.disabled = true);
+    document.getElementById("displayName").textContent = nameInput.value;
+
+    editBtn.classList.remove("d-none");
+    saveBtn.classList.add("d-none");
+    cancelBtn.classList.add("d-none");
+
+    alert("Profile updated successfully!");
+  }
+
+  function cancelEdit() {
+    nameInput.value = originalValues.name;
+    emailInput.value = originalValues.email;
+    phoneInput.value = originalValues.phone;
+    newPassword.value = "";
+    confirmPassword.value = "";
+
+    [nameInput, emailInput, phoneInput, newPassword, confirmPassword].forEach(el => el.disabled = true);
+    editBtn.classList.remove("d-none");
+    saveBtn.classList.add("d-none");
+    cancelBtn.classList.add("d-none");
+  }
+  
 </script>
 
 </body>

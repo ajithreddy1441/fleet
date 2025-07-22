@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Complaints - Fleet Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+
+  <style>
+    :root {
+      --primoo-yellow: #f9dd17;
+      --primoo-blue: #04213c;
+      --primoo-bg: #f6f8fc;
+      --primoo-dark: #25344b;
+      --primoo-grey: #e3e7ee;
+      --primoo-white: #fff;
+    }
+
+    body {
+      background-color: var(--primoo-bg);
+      font-family: 'Segoe UI', sans-serif;
+      color: var(--primoo-dark);
+    }
+
+    h2, .card-title {
+      color: var(--primoo-blue);
+    }
+
+    .btn-primary {
+      background-color: var(--primoo-yellow);
+      color: var(--primoo-blue);
+      border: none;
+    }
+
+    .btn-primary:hover {
+      background-color: #e5c900;
+    }
+
+    .card {
+      background-color: var(--primoo-white);
+      border: 1px solid var(--primoo-grey);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.03);
+    }
+
+    .table thead {
+      background-color: var(--primoo-blue);
+      color: var(--primoo-white);
+    }
+
+    .table tbody tr {
+      background-color: var(--primoo-white);
+    }
+
+    .table-striped > tbody > tr:nth-of-type(odd) {
+      background-color: var(--primoo-grey);
+    }
+
+    .container {
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2 class="mb-4">Driver Complaints</h2>
+
+  <!-- Complaint Form -->
+  <div class="card mb-4">
+    <div class="card-body">
+      <form id="complaintForm">
+        <div class="mb-3">
+          <label for="driverName" class="form-label">Driver Name</label>
+          <input type="text" class="form-control" id="driverName" required>
+        </div>
+        <div class="mb-3">
+          <label for="vehicleId" class="form-label">Vehicle ID</label>
+          <input type="text" class="form-control" id="vehicleId" required>
+        </div>
+        <div class="mb-3">
+          <label for="complaintText" class="form-label">Complaint</label>
+          <textarea class="form-control" id="complaintText" rows="4" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit Complaint</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Complaints Table -->
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Submitted Complaints</h5>
+      <table class="table table-bordered table-striped mt-3" id="complaintsTable">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Driver Name</th>
+            <th>Vehicle ID</th>
+            <th>Complaint</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody id="complaintsBody">
+          <!-- Complaints will be appended here -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+  const form = document.getElementById('complaintForm');
+  const complaintsBody = document.getElementById('complaintsBody');
+  let count = 1;
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const driverName = document.getElementById('driverName').value.trim();
+    const vehicleId = document.getElementById('vehicleId').value.trim();
+    const complaintText = document.getElementById('complaintText').value.trim();
+
+    if (!driverName || !vehicleId || !complaintText) {
+      alert("Please fill all fields");
+      return;
+    }
+
+    const now = new Date();
+    const formattedDate = now.toLocaleString();
+
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>${count++}</td>
+      <td>${driverName}</td>
+      <td>${vehicleId}</td>
+      <td>${complaintText}</td>
+      <td>${formattedDate}</td>
+    `;
+
+    complaintsBody.appendChild(row);
+
+    form.reset();
+  });
+</script>
+
+</body>
+</html>
