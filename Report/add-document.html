@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driver/Fleet Document Upload Form</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primoo-yellow: #f9dd17;
+            --primoo-blue: #04213c;
+            --primoo-bg: #f6f8fc;
+            --primoo-dark: #25344b;
+            --primoo-grey: #e3e7ee;
+            --primoo-white: #fff;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--primoo-bg) 0%, var(--primoo-grey) 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .main-container {
+            padding: 20px 0;
+        }
+        
+        .form-container {
+            background: var(--primoo-white);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(4, 33, 60, 0.1);
+            padding: 40px;
+            margin: 20px auto;
+            max-width: 800px;
+        }
+        
+        .form-header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: var(--primoo-dark);
+        }
+        
+        .form-header h1 {
+            color: var(--primoo-blue);
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .form-header p {
+            color: var(--primoo-dark);
+            font-size: 1.1rem;
+        }
+        
+        .form-section {
+            margin-bottom: 30px;
+            padding: 25px;
+            background: var(--primoo-bg);
+            border-radius: 15px;
+            border-left: 4px solid var(--primoo-yellow);
+        }
+        
+        .section-title {
+            color: var(--primoo-blue);
+            font-weight: 600;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .form-label {
+            font-weight: 600;
+            color: var(--primoo-dark);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .form-control, .form-select {
+            border: 2px solid var(--primoo-grey);
+            border-radius: 10px;
+            padding: 12px 15px;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primoo-yellow);
+            box-shadow: 0 0 0 0.2rem rgba(249, 221, 23, 0.25);
+        }
+        
+        .file-upload {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
+        }
+        
+        .file-upload input[type=file] {
+            position: absolute;
+            left: -9999px;
+        }
+        
+        .file-upload-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 15px;
+            background: linear-gradient(45deg, var(--primoo-blue), var(--primoo-dark));
+            color: var(--primoo-white);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px dashed transparent;
+            text-align: center;
+            min-height: 60px;
+        }
+        
+        .file-upload-label:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(4, 33, 60, 0.3);
+        }
+        
+        .file-upload.has-file .file-upload-label {
+            background: linear-gradient(45deg, var(--primoo-yellow), #e6c41a);
+            border-color: var(--primoo-yellow);
+            color: var(--primoo-dark);
+        }
+        
+        .file-info {
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(249, 221, 23, 0.1);
+            border-radius: 8px;
+            color: var(--primoo-dark);
+            font-size: 0.9rem;
+            display: none;
+            border: 1px solid rgba(249, 221, 23, 0.3);
+        }
+        
+        .file-info.show {
+            display: block;
+        }
+        
+        .btn-submit {
+            background: linear-gradient(45deg, var(--primoo-yellow), #e6c41a);
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            color: var(--primoo-dark);
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(249, 221, 23, 0.3);
+        }
+        
+        .btn-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(249, 221, 23, 0.4);
+            background: linear-gradient(45deg, #e6c41a, var(--primoo-yellow));
+        }
+        
+        .btn-reset {
+            background: linear-gradient(45deg, var(--primoo-dark), var(--primoo-blue));
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            color: var(--primoo-white);
+            transition: all 0.3s ease;
+            margin-left: 15px;
+        }
+        
+        .btn-reset:hover {
+            transform: translateY(-3px);
+            background: linear-gradient(45deg, var(--primoo-blue), var(--primoo-dark));
+        }
+        
+        .required {
+            color: #dc3545;
+        }
+        
+        .progress-bar {
+            display: none;
+            margin-top: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .form-container {
+                margin: 10px;
+                padding: 20px;
+            }
+            
+            .btn-submit, .btn-reset {
+                width: 100%;
+                margin: 5px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container main-container">
+        <div class="form-container">
+            <div class="form-header">
+                <h1><i class="fas fa-truck"></i> Driver/Fleet Registration</h1>
+                <p>Please fill out all required information and upload the necessary documents</p>
+            </div>
+            
+            <form id="driverFleetForm" novalidate>
+                <!-- Basic Information Section -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-user"></i>
+                        Basic Information
+                    </h3>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="driverName" class="form-label">
+                                <i class="fas fa-id-card"></i>
+                                Name of Driver/Fleet <span class="required">*</span>
+                            </label>
+                            <input type="text" class="form-control" id="driverName" name="driverName" required>
+                            <div class="invalid-feedback">
+                                Please provide a valid name.
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="peNumber" class="form-label">
+                                <i class="fas fa-hashtag"></i>
+                                Permission to Employee (PE) Number <span class="required">*</span>
+                            </label>
+                            <input type="text" class="form-control" id="peNumber" name="peNumber" required>
+                            <div class="invalid-feedback">
+                                Please provide a valid PE number.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- License Documents Section -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-file-alt"></i>
+                        License Documents
+                    </h3>
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <label class="form-label">
+                                <i class="fas fa-certificate"></i>
+                                Transport Operator License <span class="required">*</span>
+                            </label>
+                            <div class="file-upload">
+                                <input type="file" id="transportLicense" name="transportLicense" accept=".pdf,.jpg,.jpeg,.png" required>
+                                <label for="transportLicense" class="file-upload-label">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <span>Choose Transport License</span>
+                                </label>
+                            </div>
+                            <div class="file-info" id="transportLicense-info"></div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <label class="form-label">
+                                <i class="fas fa-car"></i>
+                                Valid Driving License <span class="required">*</span>
+                            </label>
+                            <div class="file-upload">
+                                <input type="file" id="drivingLicense" name="drivingLicense" accept=".pdf,.jpg,.jpeg,.png" required>
+                                <label for="drivingLicense" class="file-upload-label">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <span>Choose Driving License</span>
+                                </label>
+                            </div>
+                            <div class="file-info" id="drivingLicense-info"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ID Documents Section -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-id-badge"></i>
+                        Identification Documents
+                    </h3>
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <label class="form-label">
+                                <i class="fas fa-address-card"></i>
+                                Driver/Fleet ID (Front) <span class="required">*</span>
+                            </label>
+                            <div class="file-upload">
+                                <input type="file" id="idFront" name="idFront" accept=".pdf,.jpg,.jpeg,.png" required>
+                                <label for="idFront" class="file-upload-label">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <span>Choose ID Front</span>
+                                </label>
+                            </div>
+                            <div class="file-info" id="idFront-info"></div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <label class="form-label">
+                                <i class="fas fa-address-card"></i>
+                                Driver/Fleet ID (Back) <span class="required">*</span>
+                            </label>
+                            <div class="file-upload">
+                                <input type="file" id="idBack" name="idBack" accept=".pdf,.jpg,.jpeg,.png" required>
+                                <label for="idBack" class="file-upload-label">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <span>Choose ID Back</span>
+                                </label>
+                            </div>
+                            <div class="file-info" id="idBack-info"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Business Documents Section -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-building"></i>
+                        Business Documents
+                    </h3>
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <label class="form-label">
+                                <i class="fas fa-receipt"></i>
+                                VAT Certificate <span class="required">*</span>
+                            </label>
+                            <div class="file-upload">
+                                <input type="file" id="vatCertificate" name="vatCertificate" accept=".pdf,.jpg,.jpeg,.png" required>
+                                <label for="vatCertificate" class="file-upload-label">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <span>Choose VAT Certificate</span>
+                                </label>
+                            </div>
+                            <div class="file-info" id="vatCertificate-info"></div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <label class="form-label">
+                                <i class="fas fa-stamp"></i>
+                                Company Registration Certificate <span class="required">*</span>
+                            </label>
+                            <div class="file-upload">
+                                <input type="file" id="companyRegistration" name="companyRegistration" accept=".pdf,.jpg,.jpeg,.png" required>
+                                <label for="companyRegistration" class="file-upload-label">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <span>Choose Registration Certificate</span>
+                                </label>
+                            </div>
+                            <div class="file-info" id="companyRegistration-info"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Employment History Section -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-history"></i>
+                        Employment History
+                    </h3>
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <label class="form-label">
+                                <i class="fas fa-briefcase"></i>
+                                Employee History - Jobplus <span class="required">*</span>
+                            </label>
+                            <div class="file-upload">
+                                <input type="file" id="employeeHistory" name="employeeHistory" accept=".pdf,.jpg,.jpeg,.png" required>
+                                <label for="employeeHistory" class="file-upload-label">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <span>Choose Employee History</span>
+                                </label>
+                            </div>
+                            <div class="file-info" id="employeeHistory-info"></div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <label class="form-label">
+                                <i class="fas fa-folder-plus"></i>
+                                Other Documents
+                            </label>
+                            <div class="file-upload">
+                                <input type="file" id="otherDocuments" name="otherDocuments" accept=".pdf,.jpg,.jpeg,.png" multiple>
+                                <label for="otherDocuments" class="file-upload-label">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <span>Choose Other Documents</span>
+                                </label>
+                            </div>
+                            <div class="file-info" id="otherDocuments-info"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="progress-bar">
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <!-- Submit Buttons -->
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-submit">
+                        <i class="fas fa-paper-plane"></i>
+                        Submit Application
+                    </button>
+                    <button type="reset" class="btn btn-reset">
+                        <i class="fas fa-redo"></i>
+                        Reset Form
+                    </button>
+                </div>
+                <h6 class="text-center mt-3">
+                    <span class="required">*Note:</span> All documents must be uploaded in PDF format only.
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>

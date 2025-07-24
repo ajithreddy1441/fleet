@@ -52,11 +52,14 @@ body {
   </style>
 </head>
 <body>
-  <div class="container-fluid p-4" id="addDriverContainer" style="background: var(--primoo-bg); min-height: 100vh;">
+  <div class="container-fluid p-4" style="background: var(--primoo-bg); min-height: 100vh;">
   <div class="card shadow-sm rounded-4 border-0 p-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
-      <h5 class="fw-bold text-dark mb-0">Car Details List</h5>
+      <h5 class="fw-bold text-dark mb-0">Document Details</h5>
       <div class="d-flex gap-2">
+        <button class="btn btn-outline-dark rounded-pill" id="addDocumentBtn">
+          <i class="bi bi-plus-circle me-1"></i> Add Documents
+        </button>
         <button class="btn rounded-pill" style="background: #f9dd17; border-color: #f9dd17;">
           <i class="bi bi-funnel me-1"></i> Add Filter
         </button>
@@ -84,18 +87,26 @@ body {
         <thead class="table-light">
           <tr class="text-nowrap text-center">
             <th>Reference Number</th>
-            <th>Driver or Fleet</th>
-            <th>Car Model</th>
-            <th>Car Colour</th>
-            <th>Car Plate Number</th>
-            <th>Car Production Year</th>
-            <th>Created Date</th>
-            <th>Last Update</th>
+            <th>Name Of Driver/Fleet</th>
+            <th>Transport Operator Licence</th>
+            <th>
+              <div>Driver/Fleet ID</div>
+              <div class="d-flex border-top mt-2 pt-2">
+                <div class="flex-fill text-center border-end pe-2">valid Govt ID Front</div>
+                <div class="flex-fill text-center ps-2">Valid Govt ID Back</div>
+              </div>
+            </th>
+            <th>Valid Driving License</th>
+            <th>VAT Certificate</th>
+            <th>Company Registration Certificate</th>
+            <th>Permission to Employee (PE) Number</th>
+            <th>Employment History</th>
+            <th>Other Documents</th>
           </tr>
         </thead>
         <tbody class="text-center">
           <tr>
-            <td colspan="10" class="text-muted">No Car Details Found.</td>
+            <td colspan="10" class="text-muted">No Documents Found.</td>
           </tr>
         </tbody>
       </table>

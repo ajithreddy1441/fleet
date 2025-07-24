@@ -27,12 +27,13 @@
   }
 }
   </script>
+  
 </head>
 <body>
   <!-- Sidebar -->
   <aside class="sidebar d-flex flex-column" id="sidebar">
     <div class="logo">
-      <span class="logo-icon">G</span> GOZOLT
+      <span class="logo-icon"><i class="bi bi-arrow-up-square"></i></span> GOZOLT
     </div>
     <nav class="nav flex-column mb-4" id="sidebarMenu">
       <!-- Dashboard -->
@@ -86,7 +87,7 @@
       </a>
       <div class="submenu" data-submenu="report">
         <a class="nav-link" id="driverEarningReportLink">Earnings Report</a>
-        <a class="nav-link" id="driverComplaintsReportLink">Complaints</a>
+        <a class="nav-link" id="driverDocumentsReportLink">Documents</a>
       </div>
       <!-- Driver Location Dropdown -->
       <a class="nav-link" href="#" data-menu="location">
@@ -98,7 +99,7 @@
         <a class="nav-link" id="locationHistoryLink">Location History</a>
       </div>
       <!-- Settings Dropdown -->
-      <a class="nav-link" href="#" data-menu="settings">
+      <a class="nav-link" href="#" data-menu="setting">
         <i class="bi bi-gear"></i> Settings
         <i class="bi bi-chevron-down chevron"></i>
       </a>
@@ -141,7 +142,7 @@
       <span class="profile-img me-2" id="profileMenuBtn">
         <i class="bi bi-person"></i>
         <div class="profile-dropdown" id="profileDropdown">
-          <button class="dropdown-item" id="myProfile">Active/Suspend</button>
+          <button class="dropdown-item" id="toggleActiveStatus">Active/Suspend</button>
           <button class="dropdown-item" id="myProfile"><i class="bi bi-person-circle"></i> My Profile</button>
           <button class="dropdown-item" id="logout"><i class="bi bi-box-arrow-right"></i> Logout</button>
         </div>
@@ -193,381 +194,6 @@
   </div>
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-    // Sidebar dropdown logic for all menus
-    document.querySelectorAll('.sidebar .nav-link[data-menu]').forEach(function(link){
-      link.addEventListener('click', function(e){
-        e.preventDefault();
-        const menu = link.getAttribute('data-menu');
-        // Toggle active class
-        document.querySelectorAll('.sidebar .nav-link[data-menu]').forEach(function(l){
-          if(l !== link) {
-            l.classList.remove('active');
-            l.querySelector('.chevron').style.transform = 'rotate(0deg)';
-            const submenu = document.querySelector('.sidebar .submenu[data-submenu="'+l.getAttribute('data-menu')+'"]');
-            if(submenu) submenu.style.display = 'none';
-          }
-        });
-        // Toggle for clicked menu
-        const submenu = document.querySelector('.sidebar .submenu[data-submenu="'+menu+'"]');
-        if(submenu.style.display === 'block'){
-          submenu.style.display = 'none';
-          link.classList.remove('active');
-          link.querySelector('.chevron').style.transform = 'rotate(0deg)';
-        } else {
-          submenu.style.display = 'block';
-          link.classList.add('active');
-          link.querySelector('.chevron').style.transform = 'rotate(180deg)';
-        }
-      });
-    });
-
-    // Responsive sidebar toggle
-    const sidebar = document.getElementById('sidebar');
-    const hamburgerBtn = document.getElementById('hamburgerBtn');
-    hamburgerBtn.addEventListener('click', function(e){
-      e.stopPropagation();
-      sidebar.classList.toggle('hide');
-    });
-
-    // Click outside sidebar to close on mobile
-    document.addEventListener('click', function(event){
-      if(window.innerWidth <= 1024){
-        if(!sidebar.contains(event.target) && !hamburgerBtn.contains(event.target)){
-          sidebar.classList.add('hide');
-        }
-      }
-    });
-
-    // Theme toggle
-    document.getElementById("themeToggle").addEventListener("click", function() {
-      const body = document.body;
-      const themeIcon = document.getElementById("themeIcon");
-      if (!body.classList.contains("dark-mode")) {
-        body.classList.add("dark-mode");
-        themeIcon.classList.remove("bi-sun");
-        themeIcon.classList.add("bi-moon");
-        body.style.background = "#04213c";
-      } else {
-        body.classList.remove("dark-mode");
-        themeIcon.classList.remove("bi-moon");
-        themeIcon.classList.add("bi-sun");
-        body.style.background = "";
-      }
-    });
-
-    // Language selector
-    document.querySelectorAll('.dropdown-menu .dropdown-item').forEach(function(item){
-      item.addEventListener('click', function(){
-        document.getElementById('langBtn').innerText = this.innerText;
-      });
-    });
-
-    // Notification bell logic (demo)
-    document.getElementById('notifyBtn').addEventListener('click', function(){
-      alert('You have new notifications!');
-      // For real use, replace with modal/offcanvas etc.
-    });
-
-    // Sidebar responsive initial state for mobile
-    function checkSidebar() {
-      if(window.innerWidth <= 1024){
-        sidebar.classList.add('hide');
-      } else {
-        sidebar.classList.remove('hide');
-      }
-    }
-    window.addEventListener('resize', checkSidebar);
-    checkSidebar();
-
-    // Profile dropdown logic
-    const profileMenuBtn = document.getElementById('profileMenuBtn');
-    const profileDropdown = document.getElementById('profileDropdown');
-    profileMenuBtn.addEventListener('click', function(e){
-      e.stopPropagation();
-      profileDropdown.classList.toggle('show');
-    });
-    // Close dropdown when clicking outside
-    document.addEventListener('click', function(event){
-      if (!profileMenuBtn.contains(event.target)) {
-        profileDropdown.classList.remove('show');
-      }
-    });
-    // Option click handlers (demo)
-    
-    document.getElementById('settings').onclick = function() { alert('Go to Settings'); };
-    document.getElementById('logout').onclick = function() { alert('Logging out...'); };
-
-    // Get all nav links
-  const links = document.querySelectorAll('.nav-link');
-
-  // Check the current page URL and highlight the matching link
-  links.forEach(link => {
-    if (link.href === window.location.href) {
-      link.classList.add('active');
-    } else {
-      link.classList.remove('active');
-    }
-  });
-    // Driver Links
-    document.getElementById('addFirstDriverBtn').addEventListener('click', function () {
-      fetch('Driver/Add-driver.html')
-        .then(response => {
-          if (!response.ok) throw new Error('Failed to load Add-driver.html');
-          return response.text();
-        })
-        .then(html => {
-          document.querySelector('.main-wrapper').innerHTML = html;
-        });
-    });
-  document.getElementById('addFirstDriverBtn').addEventListener('click', function () {
-    fetch('Driver/Add-driver.html')
-      .then(response => {
-        if (!response.ok) throw new Error('Failed to load add-driver.html');
-        return response.text();
-      })
-      .then(html => {
-        document.querySelector('.main-wrapper').innerHTML = html;
-      })
-  });
-  document.getElementById('pendingDriverLink').addEventListener('click', function () {
-    fetch('Driver/pending-driver.html')
-      .then(response => {
-        if (!response.ok) throw new Error('Failed to load pending-driver.html');
-        return response.text();
-      })
-      .then(html => {
-        document.querySelector('.main-wrapper').innerHTML = html;
-      })
-  });
-  document.getElementById('addDriverLink').addEventListener('click', function () {
-    fetch('Driver/Add-driver.html')
-      .then(response => {
-        if (!response.ok) throw new Error('Failed to load add-driver.html');
-        return response.text();
-      })
-      .then(html => {
-        document.querySelector('.main-wrapper').innerHTML = html;
-      })
-  });
-  document.getElementById('driverListLink').addEventListener('click', function () {
-    fetch('Driver/driver-list.html')
-      .then(response => {
-        if (!response.ok) throw new Error('Failed to load driver-list.html');
-        return response.text();
-      })
-      .then(html => {
-        document.querySelector('.main-wrapper').innerHTML = html;
-      })
-  });
-  document.getElementById('manageDriverDocLink').addEventListener('click', function () {
-    fetch('Driver/driver-document.html')
-      .then(response => {
-        if (!response.ok) throw new Error('Failed to load driver-document.html');
-        return response.text();
-      })
-      .then(html => {
-        document.querySelector('.main-wrapper').innerHTML = html;
-      })
-  });
-  // Ride Request links
-  document.getElementById('rideHistoryLink').addEventListener('click', function () {
-    fetch('Ride Request/ride-history.html')
-      .then(response => {
-        if (!response.ok) throw new Error('Failed to load ride-history.html');
-        return response.text();
-      })
-      .then(html => {
-        document.querySelector('.main-wrapper').innerHTML = html;
-      })
-  });
-  document.getElementById('activeRidesLink').addEventListener('click', function () {
-    fetch('Ride Request/active-rides.html')
-      .then(response => {
-        if (!response.ok) throw new Error('Failed to load ride-history.html');
-        return response.text();
-      })
-      .then(html => {
-        document.querySelector('.main-wrapper').innerHTML = html;
-      })
-  });
-  document.getElementById('completedRidesLink').addEventListener('click', function () {
-    fetch('Ride Request/completed-rides.html')
-      .then(response => {
-        if (!response.ok) throw new Error('Failed to load ride-history.html');
-        return response.text();
-      })
-      .then(html => {
-        document.querySelector('.main-wrapper').innerHTML = html;
-      })
-  });
-  document.getElementById('cancelledRidesLink').addEventListener('click', function () {
-    fetch('Ride Request/cancelled-rides.html')
-      .then(response => {
-        if (!response.ok) throw new Error('Failed to load ride-history.html');
-        return response.text();
-      })
-      .then(html => {
-        document.querySelector('.main-wrapper').innerHTML = html;
-      })
-  });
-  // Car Details link
-  document.getElementById('carDetailsListLink').addEventListener('click', function () {
-    fetch('Car Details/car-details.html')
-      .then(response => {
-        if (!response.ok) throw new Error('Failed to load car-details.html');
-        return response.text();
-      })
-      .then(html => {
-        document.querySelector('.main-wrapper').innerHTML = html;
-      })
-  });
-  // Withdraw Request links
-  document.getElementById('withdrawHistoryLink').addEventListener('click', function () {
-    fetch('Withdraw Request/withdraw-history.html')
-      .then(response => {
-        if (!response.ok) throw new Error('Failed to load withdraw-history.html');
-        return response.text();
-      })
-      .then(html => {
-        document.querySelector('.main-wrapper').innerHTML = html;
-      })
-  });
-  document.getElementById('pendingWithdrawLink').addEventListener('click', function () {
-    fetch('Withdraw Request/pending-withdraw.html')
-      .then(response => {
-        if (!response.ok) throw new Error('Failed to load pending-withdraw.html');
-        return response.text();
-      })
-      .then(html => {
-        document.querySelector('.main-wrapper').innerHTML = html;
-      })
-  });
-  document.getElementById('approvedWithdrawLink').addEventListener('click', function () {
-    fetch('Withdraw Request/approved-withdraw.html')
-      .then(response => {
-        if (!response.ok) throw new Error('Failed to load approved-withdraw.html');
-        return response.text();
-      })
-      .then(html => {
-        document.querySelector('.main-wrapper').innerHTML = html;
-      })
-  });
-  document.getElementById('declineWithdrawLink').addEventListener('click', function () {
-    fetch('Withdraw Request/decline-withdraw.html')
-      .then(response => {
-        if (!response.ok) throw new Error('Failed to load decline-withdraw.html');
-        return response.text();
-      })
-      .then(html => {
-        document.querySelector('.main-wrapper').innerHTML = html;
-      })
-  });
-  document.getElementById('withdrawRequestLink').addEventListener('click', function () {
-    fetch('Withdraw Request/withdraw-request.html')
-      .then(response => {
-        if (!response.ok) throw new Error('Failed to load withdraw-request.html');
-        return response.text();
-      })
-      .then(html => {
-        document.querySelector('.main-wrapper').innerHTML = html;
-      })
-  });
-  // Report links
-  document.getElementById('driverEarningReportLink').addEventListener('click', function () {
-    fetch('Driver Earning/driver-earning.html')
-      .then(response => {
-        if (!response.ok) throw new Error('Failed to load driver-earning.html');
-        return response.text();
-      })
-      .then(html => {
-        document.querySelector('.main-wrapper').innerHTML = html;
-      })
-  });
-  // Driver Location links
-  document.getElementById('liveLocationLink').addEventListener('click', function () {
-    fetch('Driver Location/live-location.html')
-      .then(response => {
-        if (!response.ok) throw new Error('Failed to load live-location.html');
-        return response.text();
-      })
-      .then(html => {
-        document.querySelector('.main-wrapper').innerHTML = html;
-      })
-  });
-  document.getElementById('locationHistoryLink').addEventListener('click', function () {
-    fetch('Driver Location/location-history.html')
-      .then(response => {
-        if (!response.ok) throw new Error('Failed to load location-history.html');
-        return response.text();
-      })
-      .then(html => {
-        document.querySelector('.main-wrapper').innerHTML = html;
-      })
-  });
-  // Settings links
-  document.getElementById('ticketLink').addEventListener('click', function () {
-    fetch('Settings/ticket.html')
-      .then(response => {
-        if (!response.ok) throw new Error('Failed to load ticket.html');
-        return response.text();
-      })
-      .then(html => {
-        document.querySelector('.main-wrapper').innerHTML = html;
-      })
-  });
-  document.getElementById('bankingDetailsLink').addEventListener('click', function () {
-    fetch('Settings/banking-details.html')
-      .then(response => {
-        if (!response.ok) throw new Error('Failed to load banking-details.html');
-        return response.text();
-      })
-      .then(html => {
-        document.querySelector('.main-wrapper').innerHTML = html;
-      })
-  });
-  document.getElementById('vatTaxDetailsLink').addEventListener('click', function () {
-    fetch('Settings/vat-tax-details.html')
-      .then(response => {
-        if (!response.ok) throw new Error('Failed to load vat-tax-details.html');
-        return response.text();
-      })
-      .then(html => {
-        document.querySelector('.main-wrapper').innerHTML = html;
-      })
-  });
-  document.getElementById('contactUsLink').addEventListener('click', function () {
-    fetch('Settings/contact-us.html')
-      .then(response => {
-        if (!response.ok) throw new Error('Failed to load contact-us.html');
-        return response.text();
-      })
-      .then(html => {
-        document.querySelector('.main-wrapper').innerHTML = html;
-      })
-  });
-  // Car Details link
-  document.getElementById('carDetailsListLink').addEventListener('click', function () {
-    fetch('Car Details/car-details.html')
-      .then(response => {
-        if (!response.ok) throw new Error('Failed to load car-details.html');
-        return response.text();
-      })
-      .then(html => {
-        document.querySelector('.main-wrapper').innerHTML = html;
-      })
-  });
-  // Profile links
-  document.getElementById('myProfile').addEventListener('click', function () {
-  fetch('Header/my-profile.html')
-    .then(response => {
-      if (!response.ok) throw new Error('Failed to load my-profile.html');
-      return response.text();
-    })
-    .then(html => {
-      document.querySelector('.main-wrapper').innerHTML = html;
-    });
-});
-  </script>
+  <script src="main.js"></script>
 </body>
 </html>

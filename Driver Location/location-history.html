@@ -105,72 +105,7 @@
   </div>
 </div>
 
-<script>
-  const locationData = {
-    driver1: [
-      { location: "Hyderabad", lat: "17.3850", lng: "78.4867", time: "2025-07-22T09:30" },
-      { location: "Secunderabad", lat: "17.4399", lng: "78.4983", time: "2025-07-22T10:15" },
-    ],
-    driver2: [
-      { location: "Bangalore", lat: "12.9716", lng: "77.5946", time: "2025-07-21T08:15" },
-      { location: "Electronic City", lat: "12.8452", lng: "77.6604", time: "2025-07-21T08:45" },
-    ],
-    driver3: [
-      { location: "Chennai", lat: "13.0827", lng: "80.2707", time: "2025-07-22T07:30" },
-      { location: "Guindy", lat: "13.0108", lng: "80.2181", time: "2025-07-22T08:00" },
-    ]
-  };
-
-  // Clear filter inputs on page load
-  document.addEventListener("DOMContentLoaded", () => {
-    document.getElementById("driverSelect").selectedIndex = 0;
-    document.getElementById("dateInput").value = "";
-    document.getElementById("timeInput").value = "";
-  });
-
-  function filterLocations() {
-    const driver = document.getElementById("driverSelect").value;
-    const date = document.getElementById("dateInput").value;
-    const time = document.getElementById("timeInput").value;
-    const tableBody = document.getElementById("locationTableBody");
-
-    if (!driver || !date) {
-      alert("Please select a driver and date.");
-      return;
-    }
-
-    const allRecords = locationData[driver] || [];
-
-    const filtered = allRecords.filter(record => {
-      const recordDateTime = new Date(record.time);
-      const recordDate = recordDateTime.toISOString().split("T")[0];
-      const recordTime = recordDateTime.toTimeString().slice(0, 5);
-
-      if (recordDate !== date) return false;
-      if (time && recordTime !== time) return false;
-
-      return true;
-    });
-
-    tableBody.innerHTML = "";
-
-    if (filtered.length > 0) {
-      filtered.forEach((item, index) => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
-          <td>${index + 1}</td>
-          <td>${item.location}</td>
-          <td>${item.lat}</td>
-          <td>${item.lng}</td>
-          <td>${new Date(item.time).toLocaleString()}</td>
-        `;
-        tableBody.appendChild(row);
-      });
-    } else {
-      tableBody.innerHTML = `<tr><td colspan="5" class="text-center text-muted">No records found for the selected filters</td></tr>`;
-    }
-  }
-</script>
+<script src="main.js"></script>
 
 </body>
 </html>

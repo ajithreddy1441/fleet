@@ -77,30 +77,30 @@
       <i class="bi bi-upload"></i>
     </label>
     <img id="profileImg" class="profile-img" alt="Profile Image" />
-    <input type="file" id="driverPhoto" accept=".png,.jpg,.jpeg,.gif" onchange="previewProfilePic(this)" />
+    <input type="file" id="driverPhoto" accept=".png,.jpg,.jpeg,.gif" onchange="previewProfilePic(this)"/>
   </div>
 
-  <h3 id="displayName">Ajith Reddy</h3>
+  <h3 id="displayName"></h3>
   <p class="text-muted" id="displayRole">Fleet Manager</p>
 
   <!-- Form -->
   <form id="profileForm" class="text-start mt-4">
     <div class="mb-3">
       <label class="form-label">Full Name</label>
-      <input type="text" class="form-control" id="nameInput" value="Ajith Reddy" disabled>
+      <input type="text" class="form-control" id="nameInput" value="" disabled>
     </div>
     <div class="mb-3">
       <label class="form-label">Email address</label>
-      <input type="email" class="form-control" id="emailInput" value="ajith@example.com" disabled>
+      <input type="email" class="form-control" id="emailInput" value="" disabled>
     </div>
     <div class="mb-3">
       <label class="form-label">Phone</label>
-      <input type="tel" class="form-control" id="phoneInput" value="+91 9876543210" disabled>
+      <input type="tel" class="form-control" id="phoneInput" value="" disabled>
     </div>
 
     <!-- Password Change -->
     <hr class="my-4">
-    <h5 class="text-primary">Change Password</h5>
+    <h5 class="card-title">Change Password</h5>
     <div class="mb-3">
       <label class="form-label">New Password</label>
       <input type="password" class="form-control" id="newPassword" placeholder="Enter new password">
@@ -117,61 +117,7 @@
     </div>
   </form>
 </div>
-
-<script>
-  const nameInput = document.getElementById("nameInput");
-  const emailInput = document.getElementById("emailInput");
-  const phoneInput = document.getElementById("phoneInput");
-  const newPassword = document.getElementById("newPassword");
-  const confirmPassword = document.getElementById("confirmPassword");
-
-  const editBtn = document.getElementById("editBtn");
-  const saveBtn = document.getElementById("saveBtn");
-  const cancelBtn = document.getElementById("cancelBtn");
-
-  const originalValues = {
-    name: nameInput.value,
-    email: emailInput.value,
-    phone: phoneInput.value
-  };
-
-  function enableEdit() {
-    [nameInput, emailInput, phoneInput, newPassword, confirmPassword].forEach(el => el.disabled = false);
-    editBtn.classList.add("d-none");
-    saveBtn.classList.remove("d-none");
-    cancelBtn.classList.remove("d-none");
-  }
-
-  function saveProfile() {
-    if (newPassword.value !== confirmPassword.value) {
-      alert("Passwords do not match!");
-      return;
-    }
-
-    [nameInput, emailInput, phoneInput, newPassword, confirmPassword].forEach(el => el.disabled = true);
-    document.getElementById("displayName").textContent = nameInput.value;
-
-    editBtn.classList.remove("d-none");
-    saveBtn.classList.add("d-none");
-    cancelBtn.classList.add("d-none");
-
-    alert("Profile updated successfully!");
-  }
-
-  function cancelEdit() {
-    nameInput.value = originalValues.name;
-    emailInput.value = originalValues.email;
-    phoneInput.value = originalValues.phone;
-    newPassword.value = "";
-    confirmPassword.value = "";
-
-    [nameInput, emailInput, phoneInput, newPassword, confirmPassword].forEach(el => el.disabled = true);
-    editBtn.classList.remove("d-none");
-    saveBtn.classList.add("d-none");
-    cancelBtn.classList.add("d-none");
-  }
-  
-</script>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="main.js"></script>
 </body>
 </html>
